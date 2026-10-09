@@ -57,33 +57,35 @@ export default function ContactPage() {
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrorMessage("");
+  e.preventDefault();
+  setLoading(true);
+  setErrorMessage("");
 
-    try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/v1/contact-messages/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/v1/contact-messages/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(formData),
+      },
+    );
 
-      if (!response.ok) {
-        throw new Error("Failed to send message. Please try again later.");
-      }
-
-      setSubmitted(true);
-    } catch (error: any) {
-      setErrorMessage(error.message || "Something went wrong.");
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      throw new Error("Failed to send message. Please try again later.");
     }
-  };
+
+    setSubmitted(true);
+  } catch (error: any) {
+    setErrorMessage(error.message || "Something went wrong.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleChange = (
     e: React.ChangeEvent<

@@ -19,70 +19,72 @@ export default function GallerySection() {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchCampaignGallery() {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/v1/campaigns/");
-        
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          throw new Error("API did not return JSON. Check if Django server is running and URL is correct.");
-        }
+ useEffect(() => {
+  async function fetchCampaignGallery() {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
-        const data = await response.json();
-        const campaigns = Array.isArray(data) ? data : data.results || [];
-        
-        let allItems: GalleryItem[] = [];
+    try {
+      const response = await fetch(`${API_URL}/api/v1/campaigns/`);
+      
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("API did not return JSON. Check if Django server is running and URL is correct.");
+      }
 
-        campaigns.forEach((campaign: any) => {
-          let campaignImages: GalleryItem[] = [];
+      const data = await response.json();
+      const campaigns = Array.isArray(data) ? data : data.results || [];
+      
+      let allItems: GalleryItem[] = [];
 
-          // 1. Gather gallery inline images
-          if (campaign.gallery && Array.isArray(campaign.gallery)) {
-            campaign.gallery.forEach((img: any) => {
-              campaignImages.push({
-                id: img.id,
-                src: img.url,
-                alt: img.caption || campaign.title,
-                campaignSlug: campaign.slug,
-                campaignTitle: campaign.title,
-                createdAt: img.created_at || campaign.created_at,
-              });
-            });
-          }
+      campaigns.forEach((campaign: any) => {
+        let campaignImages: GalleryItem[] = [];
 
-          // 2. Also consider the main campaign cover image
-          if (campaign.image) {
+        // 1. Gather gallery inline images
+        if (campaign.gallery && Array.isArray(campaign.gallery)) {
+          campaign.gallery.forEach((img: any) => {
             campaignImages.push({
-              id: `${campaign.id}-cover`,
-              src: campaign.image,
-              alt: campaign.title,
+              id: img.id,
+              src: img.url,
+              alt: img.caption || campaign.title,
               campaignSlug: campaign.slug,
               campaignTitle: campaign.title,
-              createdAt: campaign.created_at,
+              createdAt: img.created_at || campaign.created_at,
             });
-          }
+          });
+        }
 
-          // Sort this campaign's images by recency (newest first) and take up to 2
-          campaignImages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-          
-          allItems.push(...campaignImages.slice(0, 2));
-        });
+        // 2. Also consider the main campaign cover image
+        if (campaign.image) {
+          campaignImages.push({
+            id: `${campaign.id}-cover`,
+            src: campaign.image,
+            alt: campaign.title,
+            campaignSlug: campaign.slug,
+            campaignTitle: campaign.title,
+            createdAt: campaign.created_at,
+          });
+        }
 
-        // Sort all selected images globally by recency (newest first)
-        allItems.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        // Sort this campaign's images by recency (newest first) and take up to 2
+        campaignImages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        
+        allItems.push(...campaignImages.slice(0, 2));
+      });
 
-        // Limit to 6 items for the homepage preview grid
-        setGalleryItems(allItems.slice(0, 6));
-      } catch (error) {
-        console.error("Failed to fetch gallery images:", error);
-      } finally {
-        setLoading(false);
-      }
+      // Sort all selected images globally by recency (newest first)
+      allItems.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+      // Limit to 6 items for the homepage preview grid
+      setGalleryItems(allItems.slice(0, 6));
+    } catch (error) {
+      console.error("Failed to fetch gallery images:", error);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    fetchCampaignGallery();
-  }, []);
+  fetchCampaignGallery();
+}, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
