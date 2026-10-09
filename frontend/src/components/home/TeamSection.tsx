@@ -15,7 +15,7 @@ interface TeamMember {
 }
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://shekokerjen-backend.onrender.com";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://shekokerjen-backend.onrender.com/api/v1";
 
 export default function TeamSection() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);

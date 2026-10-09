@@ -61,7 +61,7 @@ export default function ContactPage() {
     setLoading(true);
     setErrorMessage("");
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://shekokerjen-backend.onrender.com";
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://shekokerjen-backend.onrender.com/api/v1";
 
     try {
       const response = await fetch(

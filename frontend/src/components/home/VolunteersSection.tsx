@@ -21,7 +21,7 @@ interface Volunteer {
 }
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://shekokerjen-backend.onrender.com";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://shekokerjen-backend.onrender.com/api/v1";
 
 // Helper function to convert Django relative paths into absolute URLs
 const getImageUrl = (imagePath?: string | null): string | null => {
