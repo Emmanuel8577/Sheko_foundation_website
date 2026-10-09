@@ -25,6 +25,34 @@ const FacebookIcon = () => (
   </svg>
 );
 
+interface GalleryItem {
+  id?: number | string;
+  url: string;
+  caption?: string;
+}
+
+interface SocialLinks {
+  youtube?: string;
+  instagram?: string;
+  facebook?: string;
+}
+
+interface Campaign {
+  category: string;
+  status: string;
+  title: string;
+  date: string;
+  location: string;
+  beneficiaries_count: number;
+  image?: string;
+  full_story: string;
+  key_objectives?: string[];
+  social_links?: SocialLinks;
+  gallery?: GalleryItem[];
+  goal: number | string;
+  raised: number | string;
+}
+
 interface Props {
   params: Promise<{
     slug: string;
@@ -41,7 +69,7 @@ export default async function SingleCampaignPage({ params }: Props) {
     notFound();
   }
 
-  let campaign = null;
+  let campaign: Campaign | null = null;
 
   try {
     const res = await fetch(`${API_BASE_URL}/campaigns/${encodeURIComponent(rawSlug)}/`, {
@@ -180,8 +208,8 @@ export default async function SingleCampaignPage({ params }: Props) {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {campaign.gallery.map((item: any, index: number) => (
-                      <div key={index} className="group relative bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 flex flex-col justify-between shadow-sm hover:shadow-md transition-all">
+                    {campaign.gallery.map((item: GalleryItem, index: number) => (
+                      <div key={item.id || index} className="group relative bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 flex flex-col justify-between shadow-sm hover:shadow-md transition-all">
                         <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-200">
                           <Image src={item.url} alt={item.caption || `Photo ${index + 1}`} fill unoptimized className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 768px) 100vw, 33vw" />
                           <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-md flex items-center gap-1 z-10 shadow-sm">

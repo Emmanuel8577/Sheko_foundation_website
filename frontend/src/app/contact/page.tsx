@@ -27,7 +27,7 @@ const contactDetails = [
     detail: "Sheko4kerjenfoundation@gmail.com",
     subDetail: "We typically respond within 24 hours",
     href: "mailto:Sheko4kerjenfoundation@gmail.com",
-    isEmail: true, // Marker to apply special text breaking if needed
+    isEmail: true,
   },
   {
     icon: MapPin,
@@ -57,35 +57,39 @@ export default function ContactPage() {
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
-  setErrorMessage("");
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
-  try {
-    const response = await fetch(
-      `${API_URL}/api/v1/contact-messages/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const response = await fetch(
+        `${API_URL}/api/v1/contact-messages/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      },
-    );
+      );
 
-    if (!response.ok) {
-      throw new Error("Failed to send message. Please try again later.");
+      if (!response.ok) {
+        throw new Error("Failed to send message. Please try again later.");
+      }
+
+      setSubmitted(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message || "Something went wrong.");
+      } else {
+        setErrorMessage("Something went wrong.");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    setSubmitted(true);
-  } catch (error: any) {
-    setErrorMessage(error.message || "Something went wrong.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleChange = (
     e: React.ChangeEvent<

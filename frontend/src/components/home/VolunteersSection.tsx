@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, Variants, Easing } from "framer-motion";
 import { User, Quote, HeartHandshake } from "lucide-react";
 
 interface Volunteer {
@@ -23,7 +23,7 @@ interface Volunteer {
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000/api/v1";
 
-// Helper function to convert Django relative paths (/media/...) into absolute URLs
+// Helper function to convert Django relative paths into absolute URLs
 const getImageUrl = (imagePath?: string | null): string | null => {
   if (!imagePath || typeof imagePath !== "string") return null;
   if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
@@ -33,8 +33,8 @@ const getImageUrl = (imagePath?: string | null): string | null => {
   return `${backendBase}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
 };
 
-// Helper function to safely format string quote text
-const formatQuote = (text: any): string => {
+// Helper function to safely format string quote text (replaced any with unknown)
+const formatQuote = (text: unknown): string => {
   if (typeof text !== "string") return "";
   return text.replace(/^["']|["']$/g, "").trim();
 };
@@ -54,13 +54,12 @@ export default function TestimonialsSection() {
         const data = await response.json();
         const list = Array.isArray(data) ? data : data.results || [];
 
-        // Filter out unapproved entries if the backend uses an approval flag
         const approvedList = list.filter(
           (item: Volunteer) => item && item.is_approved !== false
         );
 
         setTestimonials(approvedList);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching testimonials:", err);
         setError("Unable to load testimonials at this time.");
       } finally {
@@ -71,7 +70,7 @@ export default function TestimonialsSection() {
     fetchTestimonials();
   }, []);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -81,14 +80,14 @@ export default function TestimonialsSection() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.4,
-        ease: "easeOut",
+        ease: "easeOut" as Easing,
       },
     },
   };

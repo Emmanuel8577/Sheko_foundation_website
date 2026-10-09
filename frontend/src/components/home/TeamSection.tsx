@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, Variants, Easing } from "framer-motion";
 import { User } from "lucide-react";
 
 interface TeamMember {
@@ -32,7 +32,7 @@ export default function TeamSection() {
         const data = await response.json();
         const membersList = Array.isArray(data) ? data : data.results || [];
         setTeamMembers(membersList);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching team members:", err);
         setError("Unable to load team members at this time.");
       } finally {
@@ -43,7 +43,7 @@ export default function TeamSection() {
     fetchTeamMembers();
   }, []);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -53,14 +53,14 @@ export default function TeamSection() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.4,
-        ease: "easeOut",
+        ease: "easeOut" as Easing,
       },
     },
   };
