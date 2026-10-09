@@ -23,7 +23,7 @@ interface Campaign {
 }
 
 const categories = ["All", "Healthcare", "Education", "Economic Empowerment", "Relief Aid"];
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000/api/v1";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://shekokerjen-backend.onrender.com";
 
 export default function CampaignsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
