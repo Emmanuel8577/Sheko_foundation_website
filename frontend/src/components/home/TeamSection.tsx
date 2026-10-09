@@ -1,120 +1,172 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { User } from "lucide-react";
 
-const teamMembers = [
-  {
-    name: "Emma Johnson",
-    role: "Founder & Executive Director",
-    bio: "Emma Johnson founded Hope in 2023 and has over 20 years of nonprofit experience. Her passion for education and health drives Hope's mission, inspiring the team with her leadership and dedication to making a difference.",
-    image: "/images/team/emma-johnson.png",
-  },
-  {
-    name: "Michael Ramirez",
-    role: "Director of Programs",
-    bio: "Michael Ramirez, with a background in social work and public health, oversees all of Hope's initiatives. His strategic planning and compassionate approach ensure our programs effectively meet community needs.",
-    image: "/images/team/michael-ramirez.png",
-  },
-  {
-    name: "Sophia Lee",
-    role: "Head of Education Initiatives",
-    bio: "Sophia Lee designs and leads our education programs. With over a decade of teaching experience, she is committed to providing quality education and creating opportunities for children to thrive.",
-    image: "/images/team/sophia-lee.png",
-  },
-  {
-    name: "Dora Thompson",
-    role: "Community Health Coordinator",
-    bio: "Dora Thompson manages our health and wellness programs. With a background in nursing and public health, he focuses on improving health outcomes and promoting preventive care in underserved communities.",
-    image: "/images/team/dora-thompson.png",
-  },
-];
+interface TeamMember {
+  id: string;
+  full_name: string;
+  role: string;
+  bio?: string;
+  image?: string;
+  order?: number;
+}
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000/api/v1";
 
 export default function TeamSection() {
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchTeamMembers() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/team-members/`);
+        if (!response.ok) {
+          throw new Error("Failed to load team members");
+        }
+        const data = await response.json();
+        const membersList = Array.isArray(data) ? data : data.results || [];
+        setTeamMembers(membersList);
+      } catch (err: any) {
+        console.error("Error fetching team members:", err);
+        setError("Unable to load team members at this time.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchTeamMembers();
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
+        staggerChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 25 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.4,
         ease: "easeOut",
       },
     },
   };
 
   return (
-    <section className="bg-gray-50/60 py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-gray-50/60 py-16 lg:py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-16 lg:mb-20"
+          transition={{ duration: 0.5 }}
+          className="text-center max-w-xl mx-auto mb-12 lg:mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1F1B2D] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1F1B2D] tracking-tight">
             Our team
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-gray-600 font-medium">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          <p className="mt-3 text-sm sm:text-base text-gray-600 font-medium">
+            Meet the dedicated individuals driving our mission and making a lasting impact in our communities.
           </p>
         </motion.div>
 
-        {/* 2x2 Team Cards Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"
-        >
-          {teamMembers.map((member, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              className="bg-white rounded-3xl p-8 sm:p-10 text-center shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col items-center"
-            >
-              {/* Circular Avatar */}
-              <div className="relative w-36 h-36 sm:w-40 sm:h-40 rounded-full overflow-hidden mb-6 flex-shrink-0 shadow-inner">
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 640px) 144px, 160px"
-                />
+        {/* Loading State Skeletons */}
+        {isLoading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((n) => (
+              <div
+                key={n}
+                className="bg-white rounded-2xl p-6 text-center border border-gray-100 flex flex-col items-center animate-pulse"
+              >
+                <div className="w-24 h-24 rounded-full bg-gray-200 mb-4" />
+                <div className="h-5 w-36 bg-gray-200 rounded mb-2" />
+                <div className="h-3.5 w-24 bg-gray-200 rounded mb-3" />
+                <div className="h-3.5 w-full bg-gray-200 rounded mb-1" />
+                <div className="h-3.5 w-3/4 bg-gray-200 rounded" />
               </div>
+            ))}
+          </div>
+        )}
 
-              {/* Role */}
-              <span className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider block mb-2">
-                {member.role}
-              </span>
+        {/* Error State */}
+        {!isLoading && error && (
+          <div className="text-center text-gray-500 py-8">
+            <p>{error}</p>
+          </div>
+        )}
 
-              {/* Name */}
-              <h3 className="text-2xl sm:text-3xl font-black text-[#1F1B2D] tracking-tight mb-4">
-                {member.name}
-              </h3>
+        {/* Empty State */}
+        {!isLoading && !error && teamMembers.length === 0 && (
+          <div className="text-center text-gray-500 py-8">
+            <p>No team members listed yet.</p>
+          </div>
+        )}
 
-              {/* Bio */}
-              <p className="text-gray-600 text-sm sm:text-base font-normal leading-relaxed max-w-md">
-                {member.bio}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Dynamic Compact Team Cards Grid */}
+        {!isLoading && !error && teamMembers.length > 0 && (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {teamMembers.map((member) => (
+              <motion.div
+                key={member.id}
+                variants={itemVariants}
+                className="bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col items-center"
+              >
+                {/* Compact Avatar */}
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden mb-4 flex-shrink-0 bg-purple-50 flex items-center justify-center border border-purple-100 shadow-inner">
+                  {member.image ? (
+                    <Image
+                      src={member.image}
+                      alt={member.full_name}
+                      fill
+                      className="object-cover object-center"
+                      sizes="(max-width: 640px) 96px, 112px"
+                    />
+                  ) : (
+                    <User className="w-10 h-10 text-[#8C76E5]" />
+                  )}
+                </div>
+
+                {/* 1. Name First */}
+                <h3 className="text-lg sm:text-xl font-bold text-[#1F1B2D] tracking-tight mb-1">
+                  {member.full_name}
+                </h3>
+
+                {/* 2. Role Second */}
+                <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider block mb-3">
+                  {member.role}
+                </span>
+
+                {/* 3. Bio */}
+                {member.bio && (
+                  <p className="text-gray-600 text-xs sm:text-sm font-normal leading-relaxed line-clamp-3">
+                    {member.bio}
+                  </p>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
       </div>
     </section>

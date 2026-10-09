@@ -6,14 +6,13 @@ import {
   Heart, 
   ShieldCheck, 
   Lock, 
-  Gift, 
-  CheckCircle2, 
   Sparkles, 
   ArrowRight,
   X,
   Copy,
   Check,
-  Building2
+  Building2,
+  CheckCircle2
 } from "lucide-react";
 import Footer from "@/components/common/Footer";
 
@@ -41,7 +40,7 @@ export default function DonatePage() {
   const [copiedBankAcc, setCopiedBankAcc] = useState(false);
 
   const numAmount = Number(amount) || 0;
-  const bankAccountNumber = "1234567890"; // Replace with real account number
+  const bankAccountNumber = "2226201779"; // Replace with real account number
 
   // Handle Paystack Payment Trigger
   const handlePayment = async (e: React.FormEvent) => {
@@ -95,7 +94,7 @@ export default function DonatePage() {
           ],
         },
         onSuccess: (transaction: { reference: string }) => {
-          setIsSubmitting(false);
+          // 1. Set transaction details for thank you modal directly
           setTransactionDetails({
             reference: transaction.reference,
             amount: numAmount,
@@ -107,13 +106,16 @@ export default function DonatePage() {
               day: "numeric",
             }),
           });
+
+          // 2. Open Thank You Modal
           setIsSuccessModalOpen(true);
 
-          // Reset Form Fields
+          // 3. Clear Form Fields & Reset Submitting State
           setFullName("");
           setEmail("");
           setPhone("");
           setAmount("");
+          setIsSubmitting(false);
         },
         onCancel: () => {
           setIsSubmitting(false);
@@ -328,15 +330,16 @@ export default function DonatePage() {
                 <div className="bg-white rounded-2xl p-4 border border-purple-100/60 space-y-2.5 text-xs sm:text-sm">
                   <div className="flex justify-between items-center text-slate-600">
                     <span className="text-slate-400">Bank Name</span>
-                    <span className="font-semibold text-slate-800">Guaranty Trust Bank (GTBank)</span>
+                    <span className="font-semibold text-slate-800">United Bank for Africa (UBA)</span>
                   </div>
                   <div className="flex justify-between items-center text-slate-600">
                     <span className="text-slate-400">Account Name</span>
-                    <span className="font-semibold text-slate-800">Foundation Care Org</span>
+                    <span className="font-semibold text-slate-800">Waziri jennifer shekowagami </span>
                   </div>
                   <div className="flex justify-between items-center text-slate-600 pt-2 border-t border-slate-100">
                     <span className="text-slate-400">Account Number</span>
                     <button
+                      type="button"
                       onClick={handleCopyAccount}
                       className="flex items-center gap-1.5 font-mono font-bold text-[#8C76E5] hover:text-[#7B63DC] transition-colors"
                     >
@@ -366,6 +369,7 @@ export default function DonatePage() {
             
             {/* Close Button */}
             <button
+              type="button"
               onClick={() => setIsSuccessModalOpen(false)}
               className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors"
             >
@@ -400,6 +404,7 @@ export default function DonatePage() {
               <div className="flex justify-between items-center text-slate-500 pt-2 border-t border-slate-200">
                 <span>Transaction Ref</span>
                 <button
+                  type="button"
                   onClick={handleCopyReference}
                   className="flex items-center gap-1 font-mono text-xs text-[#8C76E5] hover:underline"
                 >
@@ -421,6 +426,7 @@ export default function DonatePage() {
             {/* Action Buttons */}
             <div className="pt-2">
               <button
+                type="button"
                 onClick={() => setIsSuccessModalOpen(false)}
                 className="w-full bg-[#8C76E5] hover:bg-[#7B63DC] text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-md shadow-purple-200 flex items-center justify-center space-x-2"
               >

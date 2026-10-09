@@ -4,8 +4,9 @@ import GallerySection from "@/components/home/GallerySection";
 import Hero from "@/components/home/Hero";
 import JourneySection from "@/components/home/JourneySection";
 import TeamSection from "@/components/home/TeamSection";
-import TestimonialsSection from "@/components/home/TestimonialsSection";
+import VolunteerSection from "@/components/home/VolunteersSection";
 import WhatWeDo from "@/components/home/WhatWeDo";
+
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
       <AboutUsSection/>
       <JourneySection/>
       <TeamSection/>
-      <TestimonialsSection/>
+      <VolunteerSection/>
       <GallerySection/>
       <Footer/>
     </main>

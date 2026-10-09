@@ -2,29 +2,38 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2 } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 import Footer from "@/components/common/Footer";
 
 const contactDetails = [
   {
     icon: Phone,
     title: "Phone Number",
-    detail: "1800 123 4567",
+    detail: "+234 813 220 6123",
     subDetail: "Mon-Fri from 8am to 5pm",
-    href: "tel:18001234567",
+    href: "tel:+2348132206123",
   },
   {
     icon: Mail,
     title: "Email Address",
-    detail: "info@Hope.io",
+    detail: "Sheko4kerjenfoundation@gmail.com",
     subDetail: "We typically respond within 24 hours",
-    href: "mailto:info@Hope.io",
+    href: "mailto:Sheko4kerjenfoundation@gmail.com",
+    isEmail: true, // Marker to apply special text breaking if needed
   },
   {
     icon: MapPin,
     title: "Main Office",
-    detail: "124 Innovation Way, Suite 300",
-    subDetail: "Abuja, Nigeria",
+    detail: "No. 19, Gideon Dogo Street",
+    subDetail: "Karu, Nasarawa State, Nigeria",
     href: "#",
   },
   {
@@ -38,6 +47,8 @@ const contactDetails = [
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,14 +56,39 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Connect to your backend API or email service here
-    setSubmitted(true);
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/v1/contact-messages/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send message. Please try again later.");
+      }
+
+      setSubmitted(true);
+    } catch (error: any) {
+      setErrorMessage(error.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -60,11 +96,10 @@ export default function ContactPage() {
   return (
     <>
       <main className="min-h-screen bg-white pt-16">
-        
         {/* Header Banner */}
         <section className="relative bg-[#18151E] text-white py-20 sm:py-28 overflow-hidden">
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#8B72DE_1px,transparent_1px)] [background-size:16px_16px]" />
-          
+
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -76,10 +111,12 @@ export default function ContactPage() {
                 Get In Touch
               </span>
               <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight mb-6">
-                We&apos;d Love to <span className="text-[#8B72DE]">Hear From You</span>
+                We&apos;d Love to{" "}
+                <span className="text-[#8B72DE]">Hear From You</span>
               </h1>
               <p className="text-gray-300 text-lg sm:text-xl font-normal leading-relaxed">
-                Have questions about our foundation, want to partner with us, or looking to volunteer? Reach out to our team today.
+                Have questions about our foundation, want to partner with us, or
+                looking to volunteer? Reach out to our team today.
               </p>
             </motion.div>
           </div>
@@ -108,7 +145,9 @@ export default function ContactPage() {
                       <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">
                         {item.title}
                       </span>
-                      <h3 className="text-lg font-bold text-[#1F1B2D] mb-1">
+                      <h3
+                        className={`font-bold text-[#1F1B2D] mb-1 ${item.isEmail ? "text-xs sm:text-sm break-all" : "text-base sm:text-lg"}`}
+                      >
                         {item.detail}
                       </h3>
                       <p className="text-xs text-gray-500 font-normal">
@@ -126,7 +165,6 @@ export default function ContactPage() {
         <section className="py-20 lg:py-28 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-              
               {/* Contact Form */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -145,14 +183,23 @@ export default function ContactPage() {
                 {submitted ? (
                   <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-8 rounded-2xl text-center space-y-4">
                     <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
-                    <h3 className="text-xl font-bold">Thank you for contacting us!</h3>
+                    <h3 className="text-xl font-bold">
+                      Thank you for contacting us!
+                    </h3>
                     <p className="text-sm text-emerald-700 leading-relaxed">
-                      Your message has been received. A member of our foundation will get back to you shortly.
+                      Your message has been received and sent to the admin
+                      dashboard. A member of our foundation will get back to you
+                      shortly.
                     </p>
                     <button
                       onClick={() => {
                         setSubmitted(false);
-                        setFormData({ name: "", email: "", subject: "", message: "" });
+                        setFormData({
+                          name: "",
+                          email: "",
+                          subject: "",
+                          message: "",
+                        });
                       }}
                       className="mt-4 inline-block text-xs font-bold text-emerald-800 underline hover:text-emerald-950"
                     >
@@ -161,9 +208,19 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {errorMessage && (
+                      <div className="bg-rose-50 border border-rose-200 text-rose-700 p-4 rounded-xl text-sm flex items-center gap-2">
+                        <AlertCircle className="w-5 h-5 shrink-0" />
+                        <span>{errorMessage}</span>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div>
-                        <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-2">
+                        <label
+                          htmlFor="name"
+                          className="block text-sm font-bold text-gray-700 mb-2"
+                        >
                           Your Name
                         </label>
                         <input
@@ -179,7 +236,10 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-2">
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-bold text-gray-700 mb-2"
+                        >
                           Email Address
                         </label>
                         <input
@@ -196,7 +256,10 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                      <label htmlFor="subject" className="block text-sm font-bold text-gray-700 mb-2">
+                      <label
+                        htmlFor="subject"
+                        className="block text-sm font-bold text-gray-700 mb-2"
+                      >
                         Subject / Inquiry Type
                       </label>
                       <select
@@ -209,15 +272,24 @@ export default function ContactPage() {
                       >
                         <option value="">Select inquiry topic...</option>
                         <option value="General Inquiry">General Inquiry</option>
-                        <option value="Partnerships & Sponsorships">Partnerships & Sponsorships</option>
-                        <option value="Volunteering">Volunteering Opportunities</option>
-                        <option value="Donations & Grants">Donations & Grants</option>
+                        <option value="Partnerships & Sponsorships">
+                          Partnerships & Sponsorships
+                        </option>
+                        <option value="Volunteering Opportunities">
+                          Volunteering Opportunities
+                        </option>
+                        <option value="Donations & Grants">
+                          Donations & Grants
+                        </option>
                         <option value="Media & Press">Media & Press</option>
                       </select>
                     </div>
 
                     <div>
-                      <label htmlFor="message" className="block text-sm font-bold text-gray-700 mb-2">
+                      <label
+                        htmlFor="message"
+                        className="block text-sm font-bold text-gray-700 mb-2"
+                      >
                         Message
                       </label>
                       <textarea
@@ -234,9 +306,10 @@ export default function ContactPage() {
 
                     <button
                       type="submit"
-                      className="w-full bg-[#8B72DE] hover:bg-[#785ec8] text-white font-extrabold py-4 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center space-x-2"
+                      disabled={loading}
+                      className="w-full bg-[#8B72DE] hover:bg-[#785ec8] text-white font-extrabold py-4 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50"
                     >
-                      <span>Send Message</span>
+                      <span>{loading ? "Sending..." : "Send Message"}</span>
                       <Send className="w-4 h-4" />
                     </button>
                   </form>
@@ -255,14 +328,16 @@ export default function ContactPage() {
                   <h3 className="text-2xl font-black tracking-tight">
                     Frequently Asked Questions
                   </h3>
-                  
+
                   <div className="space-y-4 text-sm text-gray-300">
                     <div>
                       <h4 className="font-bold text-white mb-1">
                         How can I request support for my community?
                       </h4>
                       <p className="text-xs text-gray-400 leading-relaxed">
-                        Select &quot;General Inquiry&quot; in the form or send a message directly to info@Hope.io with details about your community needs.
+                        Select &quot;General Inquiry&quot; in the form or send a
+                        message directly to Sheko4kerjenfoundation@gmail.com
+                        with details about your community needs.
                       </p>
                     </div>
 
@@ -271,7 +346,9 @@ export default function ContactPage() {
                         Are donations tax-deductible?
                       </h4>
                       <p className="text-xs text-gray-400 leading-relaxed">
-                        Yes, Shekor Kerjen Foundation is a registered non-profit organization. Receipts are provided for all monetary contributions.
+                        Yes, Sheko Kerjen Foundation is a registered non-profit
+                        organization. Receipts are provided for all monetary
+                        contributions.
                       </p>
                     </div>
                   </div>
@@ -281,7 +358,7 @@ export default function ContactPage() {
                 <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-md border border-gray-100 bg-gray-100 relative">
                   <iframe
                     title="Foundation Office Location"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252148.21200213567!2d7.355152599999999!3d9.0578508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e745f4cd62fd9%3A0x53bd17b4a20ea12b!2sAbuja%2C%20Federal%20Capital%20Territory!5e0!3m2!1sen!2sng!4v1710000000000!5m2!1sen!2sng"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3939.992837372076!2d7.6012!3d8.9804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOcKwNTgnNDkuNCJOIDcuwrAzNicwNC4zIkU!5e0!3m2!1sen!2sng!4v1710000000000!5m2!1sen!2sng"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -291,11 +368,9 @@ export default function ContactPage() {
                   />
                 </div>
               </motion.div>
-
             </div>
           </div>
         </section>
-
       </main>
 
       <Footer />

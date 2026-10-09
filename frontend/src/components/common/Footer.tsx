@@ -35,12 +35,12 @@ export default function Footer() {
               <p className="font-semibold text-white mb-1">Contact Us</p>
               <p>
                 <a href="tel:18001234567" className="hover:text-[#8B72DE] transition-colors">
-                  +234 800 123 4567
+                  +234 813 220 6123
                 </a>
               </p>
               <p>
                 <a href="mailto:info@shekorkerjen.org" className="hover:text-[#8B72DE] transition-colors">
-                  info@shekorkerjen.org
+                  Sheko4kerjenfoundation@gmail.com
                 </a>
               </p>
             </div>

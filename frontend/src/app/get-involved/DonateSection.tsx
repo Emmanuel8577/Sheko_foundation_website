@@ -53,7 +53,7 @@ export default function DonateSection({ onDonateClick }: DonateSectionProps) {
               <div className="pt-2">
                 <Link
                   href="/donate"
-                  onClick={() => setIsOpen(false)}
+                  onClick={onDonateClick}
                   className="inline-flex items-center justify-center px-8 py-2.5 rounded-xl border-2 border-[#917bf0] text-[#8168e8] font-semibold text-sm hover:bg-[#917bf0] hover:text-white transition-all duration-200 shadow-sm cursor-pointer"
                 >
                   Donate
