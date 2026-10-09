@@ -1,0 +1,15 @@
+name: Keep Render Backend Alive
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send HTTP Request to Render Backend
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://shekokerjen-backend.onrender.com/api/v1/)
+          echo "Ping response status: $response"
