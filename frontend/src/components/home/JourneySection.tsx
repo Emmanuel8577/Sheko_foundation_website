@@ -39,7 +39,7 @@ export default function JourneySection() {
 
             <div className="space-y-5 text-gray-600 font-normal text-base sm:text-lg leading-relaxed">
               <p>
-                Hope was born out of a deep-seated belief that every life holds immense value and potential. Founded in 2024, our organization began with a small group of passionate individuals determined to make a difference. From humble beginnings, we have grown into a network of dedicated volunteers, supporters, and partners, all united by a common goal: to bring hope to those who need it most.
+                Sheko Foundation was born out of a deep-seated belief that every life holds immense value and potential. Founded in 2024, our organization began with a small group of passionate individuals determined to make a difference. From humble beginnings, we have grown into a network of dedicated volunteers, supporters, and partners, all united by a common goal: to bring hope to those who need it most.
               </p>
 
               <p>

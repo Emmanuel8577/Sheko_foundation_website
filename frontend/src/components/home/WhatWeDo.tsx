@@ -70,7 +70,7 @@ const WhatWeDo = () => {
             One Life at a Time.
           </h2>
           <p className="mt-8 text-lg sm:text-xl text-gray-600 font-medium leading-relaxed px-2 md:px-0">
-            At Hope, we are dedicated to uplifting communities through a range of targeted initiatives. Our focus areas include
+            At Sheko Foundation, we are dedicated to uplifting communities through a range of targeted initiatives. Our focus areas include
           </p>
         </motion.div>
 

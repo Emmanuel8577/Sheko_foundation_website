@@ -40,7 +40,7 @@ export default function DonatePage() {
   const [copiedBankAcc, setCopiedBankAcc] = useState(false);
 
   const numAmount = Number(amount) || 0;
-  const bankAccountNumber = "2226201779"; // Replace with real account number
+  const bankAccountNumber = "2226201779"; 
 
   // Handle Paystack Payment Trigger
   const handlePayment = async (e: React.FormEvent) => {
