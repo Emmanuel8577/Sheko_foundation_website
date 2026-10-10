@@ -64,7 +64,7 @@ export default function AboutUsSection() {
             A Future Filled with Hope
           </h2>
           <p className="mt-4 text-base sm:text-lg text-gray-600 font-medium">
-            At Hope, we are dedicated to uplifting communities through a range of targeted initiatives
+            At Sheko Foundation, we are dedicated to uplifting communities through a range of targeted initiatives
           </p>
         </motion.div>
 
