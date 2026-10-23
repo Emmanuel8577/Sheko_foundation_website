@@ -78,7 +78,7 @@ export default function GetInvolvedPage() {
             Get Involved
           </h1>
           <p className="text-gray-500 text-sm md:text-base leading-relaxed">
-            At Hope, we believe that every person has the power to make a difference.
+            At Sheko Foundation, we believe that every person has the power to make a difference.
             Together, we can create a brighter, more hopeful future for all. Join us in our
             mission and make an impact today.
           </p>

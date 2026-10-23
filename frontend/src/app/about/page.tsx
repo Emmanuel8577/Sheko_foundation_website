@@ -59,7 +59,7 @@ export default function AboutPage() {
         
         {/* Hero Banner */}
         <section className="relative bg-[#18151E] text-white py-24 sm:py-32 overflow-hidden">
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#8B72DE_1px,transparent_1px)] [background-size:16px_16px]" />
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#8B72DE_1px,transparent_1px)] bg-size-[16px_16px]" />
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
@@ -69,14 +69,14 @@ export default function AboutPage() {
               className="max-w-3xl"
             >
               <span className="text-sm font-semibold text-[#8B72DE] uppercase tracking-widest block mb-4">
-                About Shekor Kerjen Foundation
+                About Sheko Kerjen Foundation
               </span>
               <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight mb-6">
                 Driven by Purpose. <br />
                 <span className="text-[#8B72DE]">Rooted in Community.</span>
               </h1>
               <p className="text-gray-300 text-lg sm:text-xl font-normal leading-relaxed">
-                Shekor Kerjen Foundation is a non-profit organization dedicated to transforming underserved communities through education, healthcare access, economic empowerment, and sustainable development.
+                Sheko Kerjen Foundation is a non-profit organization dedicated to transforming underserved communities through education, healthcare access, economic empowerment, and sustainable development.
               </p>
             </motion.div>
           </div>
@@ -101,7 +101,7 @@ export default function AboutPage() {
                   Building a Foundation Where Hope Thrives
                 </h2>
                 <p className="text-gray-600 leading-relaxed text-base sm:text-lg">
-                  Founded with a conviction that every individual deserves equal opportunity, Shekor Kerjen Foundation began as a localized community aid initiative. Over time, it expanded into a multi-sector development organization working across critical social focus areas.
+                  Founded with a conviction that every individual deserves equal opportunity, Sheko Kerjen Foundation began as a localized community aid initiative. Over time, it expanded into a multi-sector development organization working across critical social focus areas.
                 </p>
                 <p className="text-gray-600 leading-relaxed text-base sm:text-lg">
                   We bridge the gap between resources and grassroots need, ensuring that families gain access to functional healthcare, youth receive actionable education, and local micro-businesses get the capital required to achieve financial independence.

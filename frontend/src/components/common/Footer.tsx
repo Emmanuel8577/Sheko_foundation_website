@@ -27,7 +27,7 @@ export default function Footer() {
           {/* Brand & Contact Info */}
           <div className="md:col-span-5 space-y-6">
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white leading-tight font-serif">
-              Shekor Kerjen <br />
+              Sheko Kerjen <br />
               <span className="text-[#8B72DE]">Foundation</span>
             </h2>
 
