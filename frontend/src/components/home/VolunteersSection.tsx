@@ -112,7 +112,7 @@ export default function TestimonialsSection() {
             Voices from Volunteers/partners
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-600 font-medium">
-            Discover how Avenia Care Foundation empowers our volunteers and transforms local communities through service.
+            Discover how Sheko Kerjen Foundation empowers our volunteers and transforms local communities through service.
           </p>
         </motion.div>
 
@@ -214,7 +214,7 @@ export default function TestimonialsSection() {
                       </p>
                     ) : (
                       <p className="text-gray-400 italic text-xs sm:text-sm mb-6">
-                        &quot;Proud to contribute to the mission of empowering lives through Avenia Care Foundation.&quot;
+                        &quot;Proud to contribute to the mission of empowering lives through Sheko Kerjen Foundation.&quot;
                       </p>
                     )}
                   </div>
