@@ -46,7 +46,7 @@ export default function StayConnectedSection() {
               Stay Connected
             </h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Stay connected with Hope and be the first to know about our latest
+              Stay connected with Sheko Foundation and be the first to know about our latest
               initiatives, success stories, and upcoming events. By subscribing
               to our newsletter, you&apos;ll receive regular updates straight to
               your inbox, giving you an inside look at the impact we&apos;re

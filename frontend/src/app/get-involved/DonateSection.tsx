@@ -20,7 +20,7 @@ export default function DonateSection({ onDonateClick }: DonateSectionProps) {
             Get Involved
           </h1>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-            At Hope, we believe that every person has the power to make a difference.
+            At Sheko Foundation, we believe that every person has the power to make a difference.
             Together, we can create a brighter, more hopeful future for all. Join us in our
             mission and make an impact today.
           </p>

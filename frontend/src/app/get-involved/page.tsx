@@ -103,7 +103,7 @@ export default function GetInvolvedPage() {
                   Stay Connected
                 </h2>
                 <p className="text-gray-500 text-sm md:text-base leading-relaxed">
-                  Stay connected with Hope and be the first to know about our latest initiatives, success stories, and upcoming events. By subscribing to our newsletter, you&apos;ll receive regular updates straight to your inbox, giving you an inside look at the impact we&apos;re making and the lives we&apos;re transforming.
+                  Stay connected with Sheko Foundation and be the first to know about our latest initiatives, success stories, and upcoming events. By subscribing to our newsletter, you&apos;ll receive regular updates straight to your inbox, giving you an inside look at the impact we&apos;re making and the lives we&apos;re transforming.
                 </p>
                 
                 {/* Email Subscription Form */}
