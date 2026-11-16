@@ -128,10 +128,19 @@ STORAGES = {
 # Fallback for older Django versions:
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# CORS Settings
+# CORS & CSRF Settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://sheko-foundation-website.vercel.app",
+    "https://shekokerjenfoundation.org",
+    "https://www.shekokerjenfoundation.org",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://sheko-foundation-website.vercel.app",
+    "https://shekokerjenfoundation.org",
+    "https://www.shekokerjenfoundation.org",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
